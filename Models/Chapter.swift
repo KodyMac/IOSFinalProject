@@ -5,7 +5,7 @@
 //  Created by Kody McNamara on 4/29/26.
 //
 
-import Foundation
+import SwiftUI
 
 struct Chapter: Identifiable {
     let id: Int
