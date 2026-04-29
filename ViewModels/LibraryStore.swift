@@ -42,6 +42,26 @@ class LibraryStore: ObservableObject {
     
     //call from readerview as user scrolls
     func updateProgress(_ progress: ReadingProgress, for bookID: Int) {
-        
+        guard let i = entries.firstIndex(where: { $0.id == bookID }) else { return }
+        entries[i].progress = progress
+        save()
+    }
+    
+    // MARK: - Settings
+    
+    func saveSettings(_ s: ReaderSettings) {
+        settings = s
+        PersistenceService.save(s,key: PersistenceService.Key.readerSettings)
+    }
+    
+    // MARK: - Private
+    
+    private func save() {
+        PersistenceService.save(entries, key: PersistenceService.Key.library)
+    }
+    
+    private func load() {
+        entries = PersistenceService.load([LibraryEntry].self, key: PersistenceService.Key.library) ?? []
+        settings = PersistenceService.load(ReaderSettings.self, key: PersistenceService.Key.readerSettings) ?? ReaderSettings()
     }
 }
